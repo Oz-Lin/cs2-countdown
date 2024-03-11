@@ -30,6 +30,10 @@ https://ctrlv.tv/video/2023/12/02/12/zaug.webm
 
 `Usage: /countdown <SECONDS> "<TEXT>"` Start timer with text
 
+**css_stopwatch**
+
+`Usage: /stopwatch` Start and Stop stopwatch
+
 
 | Command      | Permission   |
 | ------------ | ------------ |
