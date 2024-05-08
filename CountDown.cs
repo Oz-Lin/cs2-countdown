@@ -11,7 +11,7 @@ using CounterStrikeSharp.API.Modules.Timers;
 
 
 namespace CountDown;
-[MinimumApiVersion(180)]
+[MinimumApiVersion(215)]
 
 public static class GetUnixTime
 {
