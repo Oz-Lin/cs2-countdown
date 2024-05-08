@@ -26,15 +26,15 @@ public static class GetUnixTime
 public partial class CountDown : BasePlugin
 {
     public override string ModuleName => "Countdown";
-    public override string ModuleAuthor => "DeadSwim";
+    public override string ModuleAuthor => "DeadSwim, Oz-Lin";
     public override string ModuleDescription => "Simple plugin for countdown and stopwatch.";
-    public override string ModuleVersion => "V. 1.0.0";
+    public override string ModuleVersion => "V. 1.0.5";
 
 
 
     public float Time;
-    public string Text;
-    public string color;
+    public string Text = "";
+    public string color = "";
     public bool Countdown_enable;
     public bool Countdown_enable_text;
     public bool Stopwatch_enable;
@@ -72,25 +72,25 @@ public partial class CountDown : BasePlugin
                 {
                     client.PrintToCenterHtml(
                     $"<font color='gray'>----</font> <font class='fontSize-l' color='{color}'>COUNTDOWN</font><font color='gray'>----</font><br>" +
-                    $"<font color='gray'>►</font> <font class='fontSize-m' color='green'>[{Time} seconds]</font> <font color='gray'>◄</font><br>" +
-                    $"<font color='gray'>----</font> <font class='fontSize-l' color='{color}'>COUNTDOWN</font><font color='gray'>----</font><br>"
+                    $"<font color='gray'>►</font> <font class='fontSize-m' color='green'>[{Time} seconds]</font> <font color='gray'>◄</font><br>" 
+                    //$"<font color='gray'>----</font> <font class='fontSize-l' color='{color}'>COUNTDOWN</font><font color='gray'>----</font><br>"
                     );
                 }
                 if (Countdown_enable_text)
                 {
                     client.PrintToCenterHtml(
                     $"<font color='gray'>----</font> <font class='fontSize-l' color='{color}'>COUNTDOWN</font><font color='gray'>----</font><br>" +
-                    $"<font color='gray'>►</font> <font class='fontSize-l' color='gold'>[{Text}]</font><font color='gray'>◄</font><br>"+
-                    $"<font color='gray'>►</font> <font class='fontSize-m' color='green'>[{Time} seconds]</font> <font color='gray'>◄</font><br>" +
-                    $"<font color='gray'>----</font> <font class='fontSize-l' color='{color}'>COUNTDOWN</font><font color='gray'>----</font><br>"
+                    $"<font color='gray'>►</font> <font class='fontSize-m' color='gold'>[{Text}]</font><font color='gray'>◄</font><br>"+
+                    $"<font color='gray'>►</font> <font class='fontSize-m' color='green'>[{Time} seconds]</font> <font color='gray'>◄</font><br>" 
+                    //$"<font color='gray'>----</font> <font class='fontSize-l' color='{color}'>COUNTDOWN</font><font color='gray'>----</font><br>"
                     );
                 }
                 if (Stopwatch_enable)
                 {
                     client.PrintToCenterHtml(
                     $"<font color='gray'>----</font> <font class='fontSize-l' color='{color}'>STOPWATCH</font><font color='gray'>----</font><br>" +
-                    $"<font color='gray'>►</font> <font class='fontSize-m' color='green'>[{Time} seconds]</font> <font color='gray'>◄</font><br>" +
-                    $"<font color='gray'>----</font> <font class='fontSize-l' color='{color}'>STOPWATCH</font><font color='gray'>----</font><br>"
+                    $"<font color='gray'>►</font> <font class='fontSize-m' color='green'>[{Time} seconds]</font> <font color='gray'>◄</font><br>" 
+                    //$"<font color='gray'>----</font> <font class='fontSize-l' color='{color}'>STOPWATCH</font><font color='gray'>----</font><br>"
                     );
                 }
             }
@@ -109,6 +109,11 @@ public partial class CountDown : BasePlugin
     [ConsoleCommand("css_stopwatch", "Start stopwatch")]
     public void CommandStartStopwatch(CCSPlayerController? player, CommandInfo info)
     {
+        // add null check
+        if (player == null)
+        {
+            return;
+        }
         if (!AdminManager.PlayerHasPermissions(player, "@css/root"))
         {
             player.PrintToChat($" [{ChatColors.Lime}CountDown{ChatColors.Default}] You are not admin..");
@@ -142,6 +147,15 @@ public partial class CountDown : BasePlugin
     [ConsoleCommand("css_countdown", "Start countdown")]
     public void CommandStartCountDown(CCSPlayerController? player, CommandInfo info)
     {
+        // add null check
+        if (player == null)
+        {
+            return;
+        }
+        if (player. == "Console")
+        {
+
+        }
         if (!AdminManager.PlayerHasPermissions(player, "@css/root"))
         {
             player.PrintToChat($" [{ChatColors.Lime}CountDown{ChatColors.Default}] You are not admin..");
@@ -183,6 +197,11 @@ public partial class CountDown : BasePlugin
     [ConsoleCommand("css_countdown_text", "Start countdown with text")]
     public void CommandStartTextCountDown(CCSPlayerController? player, CommandInfo info)
     {
+        // add null check
+        if (player == null)
+        {
+            return;
+        }
         if (!AdminManager.PlayerHasPermissions(player, "@css/root"))
         {
             player.PrintToChat($" [{ChatColors.Lime}CountDown{ChatColors.Default}] You are not admin..");
