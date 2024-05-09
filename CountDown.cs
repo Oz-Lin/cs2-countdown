@@ -132,7 +132,7 @@ public partial class CountDown : BasePlugin
         }
         if (Countdown_enable == true || Countdown_enable_text == true)
         {
-            player.PrintToChat($" [{ChatColors.Lime}CountDown{ChatColors.Default}] You must wait for end one countdown.");
+        //    player.PrintToChat($" [{ChatColors.Lime}CountDown{ChatColors.Default}] You must wait for end one countdown.");
             return;
         }
         Stopwatch_enable = true;
@@ -170,7 +170,7 @@ public partial class CountDown : BasePlugin
         }
         if(Countdown_enable == true || Countdown_enable_text == true || Stopwatch_enable == true)
         {
-            player.PrintToChat($" [{ChatColors.Lime}CountDown{ChatColors.Default}] You must wait for end one countdown.");
+        //    player.PrintToChat($" [{ChatColors.Lime}CountDown{ChatColors.Default}] You must wait for end one countdown.");
             return;
         }
         var time_convert = Convert.ToInt32(TimeSec);
@@ -224,7 +224,7 @@ public partial class CountDown : BasePlugin
         }
         if (Countdown_enable == true || Countdown_enable_text == true || Stopwatch_enable == true)
         {
-            player.PrintToChat($" [{ChatColors.Lime}CountDown{ChatColors.Default}] You must wait for end one countdown.");
+        //    player.PrintToChat($" [{ChatColors.Lime}CountDown{ChatColors.Default}] You must wait for end one countdown.");
             return;
         }
         var time_convert = Convert.ToInt32(TimeSec);
