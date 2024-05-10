@@ -170,8 +170,8 @@ public partial class CountDown : BasePlugin
         }
         if(Countdown_enable == true || Countdown_enable_text == true || Stopwatch_enable == true)
         {
-        //    player.PrintToChat($" [{ChatColors.Lime}CountDown{ChatColors.Default}] You must wait for end one countdown.");
-            return;
+            Countdown_enable = false;
+            timer_1?.Kill();
         }
         var time_convert = Convert.ToInt32(TimeSec);
         Time = time_convert;
@@ -224,8 +224,8 @@ public partial class CountDown : BasePlugin
         }
         if (Countdown_enable == true || Countdown_enable_text == true || Stopwatch_enable == true)
         {
-        //    player.PrintToChat($" [{ChatColors.Lime}CountDown{ChatColors.Default}] You must wait for end one countdown.");
-            return;
+            Countdown_enable_text = false;
+            timer_2?.Kill();
         }
         var time_convert = Convert.ToInt32(TimeSec);
         Time = time_convert;
@@ -252,7 +252,10 @@ public partial class CountDown : BasePlugin
     }
 
     /*
-    
+    // Future Extension: 
+    // Planning for separate ChatHUD plugin as in 
+    // https://github.com/Oz-Lin/Chat-Hud-Countdown-Translator-Anubis-Edition
+
     [ConsoleCommand("say", "Trigger by Map ChatHUD")]
     public void CommandStartMapTextCountDown(CCSPlayerController? player, CommandInfo info)
     {
