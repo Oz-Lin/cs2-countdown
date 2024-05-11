@@ -31,7 +31,7 @@ public partial class CountDown : BasePlugin
     public override string ModuleName => "Countdown";
     public override string ModuleAuthor => "DeadSwim, Oz-Lin";
     public override string ModuleDescription => "Simple plugin for countdown and stopwatch.";
-    public override string ModuleVersion => "V. 1.0.5";
+    public override string ModuleVersion => "V. 1.0.6";
 
 
 
@@ -109,6 +109,24 @@ public partial class CountDown : BasePlugin
         }
         return true;
     }
+
+    // Sanitise HTML due to centre text is using HTML format.
+    private string SanitizeHTML(string inputString)
+    {
+        // Hardcoded removal of specific tags
+        inputString = inputString.Replace("<script>", "");
+        inputString = inputString.Replace("</script>", "");
+        inputString = inputString.Replace("<style>", "");
+        inputString = inputString.Replace("</style>", "");
+
+        //Encode existing HTML entities
+        inputString = inputString.Replace("&", "&amp;");
+        inputString = inputString.Replace("<", "&lt;");
+        inputString = inputString.Replace(">", "&gt;");
+
+        return inputString;
+    }
+
     [ConsoleCommand("css_stopwatch", "Start stopwatch")]
     public void CommandStartStopwatch(CCSPlayerController? player, CommandInfo info)
     {
@@ -211,6 +229,7 @@ public partial class CountDown : BasePlugin
         }
         var TimeSec = info.ArgByIndex(1);
         var Text_var = info.ArgByIndex(2);
+        Text_var = SanitizeHTML(Text_var);
 
         if (TimeSec == null || TimeSec == "" || !IsInt(TimeSec))
         {
