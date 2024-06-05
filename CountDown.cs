@@ -42,6 +42,7 @@ public partial class CountDown : BasePlugin
     public bool[] Countdown_enable_text = new bool[3];
     public bool Stopwatch_enable;
     public CounterStrikeSharp.API.Modules.Timers.Timer? timer_1;
+    //public CounterStrikeSharp.API.Modules.Timers.Timer? timer_2;
     public CounterStrikeSharp.API.Modules.Timers.Timer? timer_2a;
     public CounterStrikeSharp.API.Modules.Timers.Timer? timer_2b;
     public CounterStrikeSharp.API.Modules.Timers.Timer? timer_2c;
@@ -53,6 +54,7 @@ public partial class CountDown : BasePlugin
     {
         RegisterListener<Listeners.OnMapStart>(name =>
         {
+            index = 0;
             Countdown_enable = false;
             for (int i = 0; i < Countdown_enable_text.Length; i++) 
             { 
@@ -61,7 +63,12 @@ public partial class CountDown : BasePlugin
                 Time[i] = 0;
             }           
             Stopwatch_enable = false;
-
+            timer_1?.Kill();
+            //timer_2?.Kill();
+            timer_2a?.Kill();
+            timer_2b?.Kill();
+            timer_2c?.Kill();
+            timer_3?.Kill();
         });
         //kill timers in case of server crash on map change
         RegisterListener<Listeners.OnMapEnd>(() =>
@@ -75,6 +82,7 @@ public partial class CountDown : BasePlugin
             }
             Stopwatch_enable = false;
             timer_1?.Kill();
+            //timer_2?.Kill();
             timer_2a?.Kill();
             timer_2b?.Kill();
             timer_2c?.Kill();
@@ -104,12 +112,11 @@ public partial class CountDown : BasePlugin
                 }
                 if (Countdown_enable_text[0] && Countdown_enable_text[1] && Countdown_enable_text[2])
                 {
-                    //TODO: display 3 lines at the same time
                     client.PrintToCenterHtml(
                     $"<font class='fontSize-m' color='gold'>[{Text[0]}]</font><br>" +
-                    $"<font color='gray'>►</font> <font class='fontSize-m' color='white'>[{Time[0]} seconds]</font> <font color='gray'>◄</font>" +
+                    $"<font color='gray'>►</font> <font class='fontSize-m' color='white'>[{Time[0]} seconds]</font> <font color='gray'>◄</font><br>" +
                     $"<font class='fontSize-m' color='gold'>[{Text[1]}]</font><br>" +
-                    $"<font color='gray'>►</font> <font class='fontSize-m' color='white'>[{Time[1]} seconds]</font> <font color='gray'>◄</font>" +
+                    $"<font color='gray'>►</font> <font class='fontSize-m' color='white'>[{Time[1]} seconds]</font> <font color='gray'>◄</font><br>" +
                     $"<font class='fontSize-m' color='gold'>[{Text[2]}]</font><br>" +
                     $"<font color='gray'>►</font> <font class='fontSize-m' color='white'>[{Time[2]} seconds]</font> <font color='gray'>◄</font>"
                     );
@@ -117,10 +124,9 @@ public partial class CountDown : BasePlugin
                 }
                 if (Countdown_enable_text[0] && Countdown_enable_text[1] && !Countdown_enable_text[2])
                 {
-                    //TODO: display 2 lines at the same time
                     client.PrintToCenterHtml(
                     $"<font class='fontSize-m' color='gold'>[{Text[0]}]</font><br>" +
-                    $"<font color='gray'>►</font> <font class='fontSize-m' color='white'>[{Time[0]} seconds]</font> <font color='gray'>◄</font>" +
+                    $"<font color='gray'>►</font> <font class='fontSize-m' color='white'>[{Time[0]} seconds]</font> <font color='gray'>◄</font><br>" +
                     $"<font class='fontSize-m' color='gold'>[{Text[1]}]</font><br>" +
                     $"<font color='gray'>►</font> <font class='fontSize-m' color='white'>[{Time[1]} seconds]</font> <font color='gray'>◄</font>"
                     );
@@ -128,10 +134,9 @@ public partial class CountDown : BasePlugin
                 }
                 if (!Countdown_enable_text[0] && Countdown_enable_text[1] && Countdown_enable_text[2])
                 {
-                    //TODO: display 2 lines at the same time
                     client.PrintToCenterHtml(
                     $"<font class='fontSize-m' color='gold'>[{Text[1]}]</font><br>" +
-                    $"<font color='gray'>►</font> <font class='fontSize-m' color='white'>[{Time[1]} seconds]</font> <font color='gray'>◄</font>" +
+                    $"<font color='gray'>►</font> <font class='fontSize-m' color='white'>[{Time[1]} seconds]</font> <font color='gray'>◄</font><br>" +
                     $"<font class='fontSize-m' color='gold'>[{Text[2]}]</font><br>" +
                     $"<font color='gray'>►</font> <font class='fontSize-m' color='white'>[{Time[2]} seconds]</font> <font color='gray'>◄</font>"
                     );
@@ -139,10 +144,9 @@ public partial class CountDown : BasePlugin
                 }
                 if (Countdown_enable_text[0] && !Countdown_enable_text[1] && Countdown_enable_text[2])
                 {
-                    //TODO: display 2 lines at the same time
                     client.PrintToCenterHtml(
                     $"<font class='fontSize-m' color='gold'>[{Text[0]}]</font><br>" +
-                    $"<font color='gray'>►</font> <font class='fontSize-m' color='white'>[{Time[0]} seconds]</font> <font color='gray'>◄</font>" +
+                    $"<font color='gray'>►</font> <font class='fontSize-m' color='white'>[{Time[0]} seconds]</font> <font color='gray'>◄</font><br>" +
                     $"<font class='fontSize-m' color='gold'>[{Text[2]}]</font><br>" +
                     $"<font color='gray'>►</font> <font class='fontSize-m' color='white'>[{Time[2]} seconds]</font> <font color='gray'>◄</font>"
                     );
@@ -230,17 +234,18 @@ public partial class CountDown : BasePlugin
         }
         if (Stopwatch_enable == true)
         {
-            player.PrintToChat($"  [{ChatColors.Lime}CountDown{ChatColors.Default}] StopWatch be turned off!");
+            player.PrintToChat($"  [{ChatColors.Lime}CountDown{ChatColors.Default}] StopWatch has turned off!");
             Stopwatch_enable = false;
             timer_3?.Kill();
             return;
         }
-        if (Countdown_enable == true || Countdown_enable_text[0] == true)
+        if (Countdown_enable == true || Countdown_enable_text[0] == true || Countdown_enable_text[1] == true || Countdown_enable_text[2] == true)
         {
             //    player.PrintToChat($" [{ChatColors.Lime}CountDown{ChatColors.Default}] You must wait for end one countdown.");
             return;
         }
         Stopwatch_enable = true;
+        index = 0;
         timer_3 = AddTimer(1.0f, () =>
         {
             RandomColor();
@@ -267,14 +272,21 @@ public partial class CountDown : BasePlugin
             player.PrintToChat($" [{ChatColors.Lime}CountDown{ChatColors.Default}] You must use that {ChatColors.Lime}/countdown <TIME_SECONDS>{ChatColors.Default}.");
             return;
         }
-        if (Countdown_enable == true || Countdown_enable_text[0] == true || Stopwatch_enable == true)
+        if (Countdown_enable == true || Countdown_enable_text[0] == true || Countdown_enable_text[1] == true || Countdown_enable_text[2] == true || Stopwatch_enable == true)
         {
             Countdown_enable = false;
+            Countdown_enable_text[0] = false;
+            Countdown_enable_text[1] = false;
+            Countdown_enable_text[2] = false;
             timer_1?.Kill();
+            timer_2a?.Kill();
+            timer_2b?.Kill();
+            timer_2c?.Kill();
         }
         var time_convert = Convert.ToInt32(TimeSec);
         Time[0] = time_convert;
         Countdown_enable = true;
+        index = 0;
         timer_1 = AddTimer(1.0f, () =>
         {
             if (Time[0] <= 0.0)
