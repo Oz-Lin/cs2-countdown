@@ -31,7 +31,7 @@ public partial class CountDown : BasePlugin
     public override string ModuleName => "Countdown";
     public override string ModuleAuthor => "DeadSwim, Oz-Lin";
     public override string ModuleDescription => "Simple plugin for countdown and stopwatch.";
-    public override string ModuleVersion => "V. 1.0.6";
+    public override string ModuleVersion => "V. 1.0.6b";
 
 
 
@@ -75,16 +75,16 @@ public partial class CountDown : BasePlugin
                 {
                     client.PrintToCenterHtml(
                     $"<font color='gray'>----</font> <font class='fontSize-l' color='{color}'>COUNTDOWN</font><font color='gray'>----</font><br>" +
-                    $"<font color='gray'>►</font> <font class='fontSize-m' color='white'>[{Time} seconds]</font> <font color='gray'>◄</font><br>" 
+                    $"<font color='gray'>►</font> <font class='fontSize-m' color='white'>[{Time} seconds]</font> <font color='gray'>◄</font>" 
                     //$"<font color='gray'>----</font> <font class='fontSize-l' color='{color}'>COUNTDOWN</font><font color='gray'>----</font><br>"
                     );
                 }
                 if (Countdown_enable_text)
                 {
                     client.PrintToCenterHtml(
-                    $"<font color='gray'>----</font> <font class='fontSize-l' color='{color}'>COUNTDOWN</font><font color='gray'>----</font><br>" +
+                    $"<font color='gray'>----</font> <font class='fontSize-m' color='{color}'>COUNTDOWN</font><font color='gray'>----</font><br>" +
                     $"<font color='gray'>►</font> <font class='fontSize-m' color='gold'>[{Text}]</font><font color='gray'>◄</font><br>"+
-                    $"<font color='gray'>►</font> <font class='fontSize-m' color='white'>[{Time} seconds]</font> <font color='gray'>◄</font><br>" 
+                    $"<font color='gray'>►</font> <font class='fontSize-m' color='white'>[{Time} seconds]</font> <font color='gray'>◄</font>" 
                     //$"<font color='gray'>----</font> <font class='fontSize-l' color='{color}'>COUNTDOWN</font><font color='gray'>----</font><br>"
                     );
                 }
@@ -92,7 +92,7 @@ public partial class CountDown : BasePlugin
                 {
                     client.PrintToCenterHtml(
                     $"<font color='gray'>----</font> <font class='fontSize-l' color='{color}'>STOPWATCH</font><font color='gray'>----</font><br>" +
-                    $"<font color='gray'>►</font> <font class='fontSize-m' color='white'>[{Time} seconds]</font> <font color='gray'>◄</font><br>" 
+                    $"<font color='gray'>►</font> <font class='fontSize-m' color='white'>[{Time} seconds]</font> <font color='gray'>◄</font>" 
                     //$"<font color='gray'>----</font> <font class='fontSize-l' color='{color}'>STOPWATCH</font><font color='gray'>----</font><br>"
                     );
                 }
@@ -108,6 +108,19 @@ public partial class CountDown : BasePlugin
                 return false;
         }
         return true;
+    }
+
+    private string ParseInt(string sVal)
+    {
+        string strNumber = "";
+        foreach (char c in sVal)
+        {
+            int iN = (int)c;
+            if ((iN > 57) || (iN < 48))
+                return strNumber;
+            strNumber += c;
+        }
+        return strNumber;
     }
 
     // Sanitise HTML due to centre text is using HTML format.
@@ -228,17 +241,18 @@ public partial class CountDown : BasePlugin
             return;
         }
         var TimeSec = info.ArgByIndex(1);
+        TimeSec = ParseInt(TimeSec);
         var Text_var = info.ArgByIndex(2);
         Text_var = SanitizeHTML(Text_var);
 
-        if (TimeSec == null || TimeSec == "" || !IsInt(TimeSec))
-        {
-            player.PrintToChat($" [{ChatColors.Lime}CountDown{ChatColors.Default}] You must use that {ChatColors.Lime}/countdown_text <TIME_SECONDS> <TEXT>{ChatColors.Default}.");
-            return;
-        }
+        //if (TimeSec == null || TimeSec == "" || !IsInt(TimeSec))
+        //{
+            //player.PrintToChat($" [{ChatColors.Lime}CountDown{ChatColors.Default}] You must use that {ChatColors.Lime}/countdown_text <TIME_SECONDS> <TEXT>{ChatColors.Default}.");
+        //    return;
+        //}
         if (Text_var == null || Text_var == "")
         {
-            player.PrintToChat($" [{ChatColors.Lime}CountDown{ChatColors.Default}] You must use that {ChatColors.Lime}/countdown_text <TIME_SECONDS> <TEXT>{ChatColors.Default}.");
+            //player.PrintToChat($" [{ChatColors.Lime}CountDown{ChatColors.Default}] You must use that {ChatColors.Lime}/countdown_text <TIME_SECONDS> <TEXT>{ChatColors.Default}.");
             return;
         }
         if (Countdown_enable == true || Countdown_enable_text == true || Stopwatch_enable == true)
