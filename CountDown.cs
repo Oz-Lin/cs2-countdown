@@ -31,7 +31,7 @@ public partial class CountDown : BasePlugin
     public override string ModuleName => "Countdown";
     public override string ModuleAuthor => "DeadSwim, Oz-Lin";
     public override string ModuleDescription => "Simple plugin for countdown and stopwatch.";
-    public override string ModuleVersion => "V. 1.0.6b";
+    public override string ModuleVersion => "V. 1.0.7b";
 
 
 
@@ -48,6 +48,8 @@ public partial class CountDown : BasePlugin
 
     public override void Load(bool hotReload)
     {
+        RegisterEventHandler<EventRoundStart>(OnEventRoundStart);
+
         RegisterListener<Listeners.OnMapStart>(name =>
         {
             Countdown_enable = false;
@@ -57,7 +59,9 @@ public partial class CountDown : BasePlugin
             Time = 0;
 
         });
-        RegisterListener<Listeners.OnTick>(() =>
+
+        // Use Timer to replace OnTick
+        AddTimer(0.2f, () =>
         {
             for (int i = 1; i < Server.MaxPlayers; i++)
             {
@@ -97,8 +101,20 @@ public partial class CountDown : BasePlugin
                     );
                 }
             }
-        });
+        }, TimerFlags.REPEAT | TimerFlags.STOP_ON_MAPCHANGE);
     }
+
+    [GameEventHandler]
+    private HookResult OnEventRoundStart(EventRoundStart @event, GameEventInfo info)
+    {
+        Countdown_enable = false;
+        Countdown_enable_text = false;
+        Stopwatch_enable = false;
+        Text = "";
+        Time = 0;
+        return HookResult.Continue;
+    }
+
     private bool IsInt(string sVal)
     {
         foreach (char c in sVal)
@@ -136,6 +152,7 @@ public partial class CountDown : BasePlugin
         inputString = inputString.Replace("&", "&amp;");
         inputString = inputString.Replace("<", "&lt;");
         inputString = inputString.Replace(">", "&gt;");
+        inputString = inputString.Replace("\"", "&quot;");
 
         return inputString;
     }
